@@ -4,6 +4,7 @@ export default [
     type: 'text',
     field: 'name',
     label: "User's name",
+    row: 1,
     style: {
       color: 'green',
       margin: '10px',
@@ -20,6 +21,7 @@ export default [
     type: 'number',
     field: 'age',
     label: "User's age",
+    row: 2,
     style: {
       color: 'green',
       margin: '10px',
@@ -40,6 +42,7 @@ export default [
     type: 'text',
     field: 'email',
     label: "User's Email",
+    row: 1,
     style: {
       color: 'green',
       margin: '10px',
@@ -55,6 +58,7 @@ export default [
   {
     type: 'array',
     field: 'user',
+    row: 3,
     children: [
       {
         type: 'text',

@@ -1,11 +1,12 @@
 import './App.css';
-import SignupForm from './components/SignupForm';
+import FormBuilder from './components/FormBuilder';
+import { PageWrapper } from './style';
 
 function App() {
   return (
-    <div className='App'>
-      <SignupForm />
-    </div>
+    <PageWrapper>
+      <FormBuilder />
+    </PageWrapper>
   );
 }
 
