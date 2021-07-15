@@ -1,96 +1,73 @@
 // eslint-disable-next-line import/no-anonymous-default-export
-export default [
-  {
-    title: 'Proposition Widget',
-    sections: [
-      {
-        type: 'content',
-        title: 'Content',
-        fields: [
-          {
-            type: 'select',
-            fieldId: 'componentType',
-            label: 'Select Type',
-            row: 1,
-            style: {
-              color: 'green',
-              margin: '10px',
+export default {
+  contentTypeTitle: 'Content Title',
+  contentControls: [
+    {
+      type: 'array',
+      title: 'Component',
+      name: 'component',
+      validationType: 'object',
+      children: [
+        {
+          name: 'component.type',
+          type: 'text',
+          label: 'Select Type',
+          validations: [
+            {
+              type: 'required',
+              params: ['Component type is required'],
             },
-            validationType: 'string',
-            validations: [
-              {
-                type: 'required',
-                params: ['Name is required'],
-              },
-            ],
-          },
-          {
-            type: 'number',
-            field: 'age',
-            label: "User's age",
-            row: 2,
-            style: {
-              color: 'green',
-              margin: '10px',
+          ],
+          validationType: 'string',
+        },
+        {
+          name: 'component.uniqueComponentName',
+          type: 'text',
+          label:
+            'Enter a label to uniquely identify this component (this is for your information only)',
+          validations: [
+            {
+              type: 'required',
+              params: ['Unique name is required field'],
             },
-            validationType: 'number',
-            validations: [
-              {
-                type: 'min',
-                params: [18, 'Min age is 18'],
-              },
-              {
-                type: 'max',
-                params: [60, 'Max age is 50'],
-              },
-            ],
-          },
-        ],
-      },
-      {
-        type: 'component',
-        title: 'Component',
-        fields: [
-          {
-            type: 'select',
-            fieldId: 'componentType',
-            label: 'Select Type',
-            row: 1,
-            style: {
-              color: 'green',
-              margin: '10px',
+          ],
+          validationType: 'string',
+        },
+      ],
+    },
+
+    {
+      type: 'array',
+      name: 'content',
+      title: 'Content',
+      validationType: 'object',
+      children: [
+        {
+          name: 'content.type',
+          type: 'text',
+          label: 'Select Type',
+          validations: [
+            {
+              type: 'required',
+              params: ['Component type is required'],
             },
-            validationType: 'string',
-            validations: [
-              {
-                type: 'required',
-                params: ['Name is required'],
-              },
-            ],
-          },
-          {
-            type: 'number',
-            field: 'age',
-            label: "User's age",
-            row: 2,
-            style: {
-              color: 'green',
-              margin: '10px',
+          ],
+          validationType: 'string',
+        },
+        {
+          name: 'content.uniqueComponentName',
+          type: 'text',
+          label:
+            'Enter a label to uniquely identify this component (this is for your information only)',
+          validations: [
+            {
+              type: 'required',
+              params: ['Unique name is required field'],
             },
-            validationType: 'number',
-            validations: [
-              {
-                type: 'min',
-                params: [18, 'Min age is 18'],
-              },
-              {
-                type: 'max',
-                params: [60, 'Max age is 50'],
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-];
+          ],
+          validationType: 'string',
+        },
+      ],
+    },
+  ],
+};

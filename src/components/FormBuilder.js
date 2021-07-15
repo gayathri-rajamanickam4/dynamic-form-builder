@@ -1,5 +1,5 @@
 import React from 'react';
-import controlListConfig from '../ApiResponse';
+import controlListConfig from '../modelResponse';
 import { useFormik } from 'formik';
 import { getYupSchemaFromMetaData } from '../yupSchemaCreator';
 import ComponentFactory from './ComponentFactory';
@@ -7,8 +7,9 @@ import Button from '@beans/button';
 import Container from 'react-bootstrap/Container';
 
 const FormBuilder = () => {
-  const schema = getYupSchemaFromMetaData(controlListConfig);
+  const schema = getYupSchemaFromMetaData(controlListConfig.contentControls);
 
+  console.log('schema::', schema);
   const formikProps = useFormik({
     initialValues: {},
     onSubmit: (values) => {
@@ -21,10 +22,11 @@ const FormBuilder = () => {
 
   return (
     <form onSubmit={formikProps.handleSubmit}>
+      <h1>{controlListConfig.contentTypeTitle}</h1>
       Errors : {JSON.stringify(formikProps.errors)}
       <Container>
         <ComponentFactory
-          controlListConfig={controlListConfig}
+          controlListConfig={controlListConfig.contentControls}
           formikProps={formikProps}
         ></ComponentFactory>
       </Container>

@@ -23,28 +23,135 @@ import * as yup from 'yup';
 // yup.addMethod(yup.string, 'stringBoolean', validator);
 // yup.addMethod(yup.string, 'StringBoolean', validator);
 
-export function createYupSchema(schema, config) {
-  const { field, validationType, validations = [] } = config;
-  if (!yup[validationType]) {
-    return schema;
-  }
-  let validator = yup[validationType]();
+// export function createYupSchema(schema, config) {
+//   const { name, validationType, validations = [] } = config;
+//   if (!yup[validationType] && !config.children) {
+//     return schema;
+//   }
+//   if (config.children) {
+//     return config.children.reduce(createYupSchema, schema);
+//   }
+//   let validator = yup[validationType]();
+//   validations.forEach((validation) => {
+//     const { params, type } = validation;
+//     if (!validator[type]) {
+//       return;
+//     }
+//     validator = validator[type](...params);
+//   });
+//   if (name.indexOf('.') !== -1) {
+//     const reversePath = name.split('.').reverse();
+//     const currNestedObject = reversePath.slice(1).reduce(
+//       (yupObj, path) => {
+//         return { [path]: yup.object().shape(yupObj) };
+//       },
+//       { [reversePath[0]]: field.validation }
+//     );
+
+//     return { ...schema, ...currNestedObject };
+//   } else {
+//     schema[name] = validator;
+//   }
+
+//   return schema;
+// }
+
+const generateValidator = (validationType, validations, nestedSchema) => {
+  let validator = nestedSchema
+    ? yup[validationType]().shape(nestedSchema)
+    : yup[validationType]();
   validations.forEach((validation) => {
     const { params, type } = validation;
     if (!validator[type]) {
-      return;
+      throw new Error('Invalid validation type');
     }
     validator = validator[type](...params);
   });
-  if (field.indexOf('.') !== -1) {
-    // nested fields are not covered in this example but are eash to handle tough
+
+  return validator;
+};
+
+// const createYupSchema = (fields) => {
+//   const schema = fields.reduce((schema, field) => {
+//     const { name, validationType, validations = [], children } = field;
+//     let nestedSchema = null;
+//     if (children) {
+//       nestedSchema = createYupSchema(children);
+//     }
+//     if (!yup[validationType]) {
+//       throw new Error('Invalid validationType');
+//       //return schema;
+//     }
+//     // const isObject = name.indexOf('.') >= 0;
+//     const validator = generateValidator(
+//       validationType,
+//       validations,
+//       nestedSchema
+//     );
+//     // if (!isObject) {
+//     //   return { ...schema, [name]: validator };
+//     // }
+
+//     let key;
+//     if (name.indexOf('.') >= 0) {
+//       key = name.split('.').reverse()[0];
+//     } else {
+//       key = name;
+//     }
+
+//     // const currNestedObject = reversePath.slice(1).reduce(
+//     //   (yupObj, path) => {
+//     //     return { [path]: yup.object().shape(yupObj) };
+//     //   },
+//     //   { [reversePath[0]]: validator }
+//     // );
+
+//     return { ...schema, [key]: validator };
+//   }, {});
+
+//   return yup.object().shape(schema);
+// };
+
+const createYupSchema = (schema, field) => {
+  const { name, validationType, validations = [], children } = field;
+  let nestedSchema = null;
+  if (children) {
+    nestedSchema = children.reduce(createYupSchema, {});
+  }
+  if (!yup[validationType]) {
+    throw new Error('Invalid validationType');
+    //return schema;
+  }
+  // const isObject = name.indexOf('.') >= 0;
+  const validator = generateValidator(
+    validationType,
+    validations,
+    nestedSchema
+  );
+  // if (!isObject) {
+  //   return { ...schema, [name]: validator };
+  // }
+
+  let key;
+  if (name.indexOf('.') >= 0) {
+    key = name.split('.').reverse()[0];
   } else {
-    schema[field] = validator;
+    key = name;
   }
 
-  return schema;
-}
+  // const currNestedObject = reversePath.slice(1).reduce(
+  //   (yupObj, path) => {
+  //     return { [path]: yup.object().shape(yupObj) };
+  //   },
+  //   { [reversePath[0]]: validator }
+  // );
 
+  //   return { ...schema, [key]: validator };
+
+  schema[key] = validator;
+
+  return schema;
+};
 export const getYupSchemaFromMetaData = (
   metadata,
   additionalValidations = [],

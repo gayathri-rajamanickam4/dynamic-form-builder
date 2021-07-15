@@ -8,26 +8,24 @@ const ComponentFactory = ({ controlListConfig, formikProps }) => {
         return (
           <>
             <div>
-              {formikProps.errors[individualConfig.field] ? (
+              {formikProps.errors[individualConfig.name] ? (
                 <InputGroup
                   error
-                  errorMessage={formikProps.errors[individualConfig.field]}
-                  id={individualConfig.field}
+                  errorMessage={formikProps.errors[individualConfig.name]}
                   labelText={individualConfig.label}
                   placeholder='Placeholder text...'
                   required
-                  name={individualConfig.field}
+                  name={individualConfig.name}
                   onChange={formikProps.handleChange}
                   style={{ ...individualConfig.style }}
                   type='text'
                 />
               ) : (
                 <InputGroup
-                  id={individualConfig.field}
                   labelText={individualConfig.label}
                   placeholder='Placeholder text...'
                   required
-                  name={individualConfig.field}
+                  name={individualConfig.name}
                   onChange={formikProps.handleChange}
                   style={{ ...individualConfig.style }}
                   type='text'
@@ -54,10 +52,14 @@ const ComponentFactory = ({ controlListConfig, formikProps }) => {
         );
       case 'array':
         return (
-          <ComponentFactory
-            controlListConfig={individualConfig.children || []}
-            formikProps={formikProps}
-          />
+          <>
+            <h2>{individualConfig.title}</h2>
+            <hr></hr>
+            <ComponentFactory
+              controlListConfig={individualConfig.children || []}
+              formikProps={formikProps}
+            />
+          </>
         );
       default:
         return <div>Unsupported field</div>;
