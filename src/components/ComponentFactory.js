@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react';
 import InputGroup from '@beans/input-group';
+import DropdownGroup from '@beans/dropdown-group';
+// import babel from 'babel-core';
 
 const ComponentFactory = ({ controlListConfig, formikProps }) => {
   const builder = (individualConfig) => {
@@ -13,7 +15,6 @@ const ComponentFactory = ({ controlListConfig, formikProps }) => {
                   error
                   errorMessage={formikProps.errors[individualConfig.name]}
                   labelText={individualConfig.label}
-                  placeholder='Placeholder text...'
                   required
                   name={individualConfig.name}
                   onChange={formikProps.handleChange}
@@ -21,9 +22,12 @@ const ComponentFactory = ({ controlListConfig, formikProps }) => {
                   type='text'
                 />
               ) : (
+                // eslint-disable-next-line no-eval
+                // eval(individualConfig.displayCondition) && (
+
+                // babel.transform(individualConfig.displayCondition).code && (
                 <InputGroup
                   labelText={individualConfig.label}
-                  placeholder='Placeholder text...'
                   required
                   name={individualConfig.name}
                   onChange={formikProps.handleChange}
@@ -33,6 +37,20 @@ const ComponentFactory = ({ controlListConfig, formikProps }) => {
               )}
             </div>
           </>
+        );
+      case 'enum':
+        return (
+          <DropdownGroup
+            defaultSelectedValue=''
+            id={individualConfig.name}
+            labelText={individualConfig.label}
+            onChange={formikProps.handleChange}
+          >
+            <option value=''>Select option</option>
+            {individualConfig.options.split(',').map((op) => (
+              <option value={op}>{op}</option>
+            ))}
+          </DropdownGroup>
         );
       case 'number':
         return (

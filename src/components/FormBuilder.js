@@ -1,12 +1,16 @@
 import React from 'react';
-import controlListConfig from '../modelResponse';
+// import controlListConfig from '../modelResponse';
+import contentBuilderResponse from '../contentBuilderResponse';
 import { useFormik } from 'formik';
 import { getYupSchemaFromMetaData } from '../yupSchemaCreator';
 import ComponentFactory from './ComponentFactory';
 import Button from '@beans/button';
 import Container from 'react-bootstrap/Container';
+import { transformResponse } from '../helpers/transformer';
 
 const FormBuilder = () => {
+  const controlListConfig = transformResponse(contentBuilderResponse);
+  console.log('controlListConfig::', controlListConfig);
   const schema = getYupSchemaFromMetaData(controlListConfig.contentControls);
 
   console.log('schema::', schema);

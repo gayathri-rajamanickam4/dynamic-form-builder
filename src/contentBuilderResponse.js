@@ -4,20 +4,17 @@ export default {
   sections: [
     {
       name: 'component',
-      type: 'text',
+      type: 'array',
       label: '',
       sectionTitle: 'Component',
+      validationType: 'object',
       fields: [
         {
           name: 'type',
-          type: 'text',
+          type: 'enum',
           label: 'Select Type',
-          validations: [
-            {
-              type: 'required',
-              params: ['Component type is required'],
-            },
-          ],
+          validations: [],
+          options: 'op1,op2',
           validationType: 'string',
         },
         {
@@ -25,13 +22,9 @@ export default {
           type: 'text',
           label:
             'Enter a label to uniquely identify this component (this is for your information only)',
-          validations: [
-            {
-              type: 'required',
-              params: ['Unique name is required field'],
-            },
-          ],
+          validations: [],
           validationType: 'string',
+          displayCondition: "type === 'op2'",
         },
       ],
     },
